@@ -1,112 +1,136 @@
+"use client";
+import { ArrowRightIcon } from "@heroicons/react/24/outline";
 import Image from "next/image";
+import Link from "next/link";
+import { useState } from "react";
 
-export default function Home() {
+const Details = [
+  {
+    cityname: "Mumbai",
+    lat: -33,
+    long: 151,
+    citycodename: "MUM",
+    temperature: 22,
+    cityicon: "/weather/sunny.gif",
+    humidity: 65,
+    weather: "Sunny",
+    bg: "bg-blue-200",
+    highestTemperature: 30,
+    lowestTemperature: 18,
+    building: "/building/mumbai-building.png",
+  },
+  {
+    cityname: "New York",
+    lat: 40,
+    long: 74,
+    citycodename: "NYC",
+    temperature: 20,
+    cityicon: "/weather/clear.gif",
+    humidity: 70,
+    weather: "Cloudy",
+    bg: "bg-blue-300",
+    highestTemperature: 25,
+    lowestTemperature: 15,
+    building: "/building/ny-building.png",
+  },
+  {
+    cityname: "London",
+    lat: 51,
+    long: 10,
+    citycodename: "LDN",
+    temperature: 15,
+    cityicon: "/weather/rainy.gif",
+    humidity: 80,
+    weather: "Rain",
+    bg: "bg-pink-400",
+    highestTemperature: 20,
+    lowestTemperature: 10,
+    building: "/building/london-building.png",
+  },
+  {
+    cityname: "Tokyo",
+    lat: 35,
+    long: 13,
+    citycodename: "TYO",
+    temperature: 25,
+    cityicon: "/weather/clear.gif",
+    humidity: 60,
+    weather: "Clear",
+    bg: "bg-yellow-200",
+    highestTemperature: 30,
+    lowestTemperature: 20,
+    building: "/building/tokyo-building.png",
+  },
+  {
+    cityname: "Paris",
+    lat: 48,
+    long: 23,
+    citycodename: "PAR",
+    temperature: 18,
+    cityicon: "/weather/stormy.webp",
+    humidity: 75,
+    weather: "Partly Cloudy",
+    bg: "bg-red-400",
+    highestTemperature: 22,
+    lowestTemperature: 12,
+    building: "/building/paris-building.png",
+  },
+];
+
+export default function Page() {
+  const [selectedCity, setSelectedCity] = useState("Mumbai");
+
+  const selectedData = Details.filter((data) => data.cityname === selectedCity);
+
   return (
-    <main className="flex min-h-screen flex-col items-center justify-between p-24">
-      <div className="z-10 max-w-5xl w-full items-center justify-between font-mono text-sm lg:flex">
-        <p className="fixed left-0 top-0 flex w-full justify-center border-b border-gray-300 bg-gradient-to-b from-zinc-200 pb-6 pt-8 backdrop-blur-2xl dark:border-neutral-800 dark:bg-zinc-800/30 dark:from-inherit lg:static lg:w-auto  lg:rounded-xl lg:border lg:bg-gray-200 lg:p-4 lg:dark:bg-zinc-800/30">
-          Get started by editing&nbsp;
-          <code className="font-mono font-bold">app/page.tsx</code>
-        </p>
-        <div className="fixed bottom-0 left-0 flex h-48 w-full items-end justify-center bg-gradient-to-t from-white via-white dark:from-black dark:via-black lg:static lg:h-auto lg:w-auto lg:bg-none">
-          <a
-            className="pointer-events-none flex place-items-center gap-2 p-8 lg:pointer-events-auto lg:p-0"
-            href="https://vercel.com?utm_source=create-next-app&utm_medium=appdir-template&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
+    <main className="flex h-8 min-h-screen flex-col items-center justify-center bg-slate-400 p-6 hover:h-full">
+      <div
+        className="flex h-52 w-52 flex-col items-center justify-center  rounded-xl bg-white p-6"
+        style={{
+          backgroundImage: `url('${selectedData[0].cityicon}')`,
+          backgroundSize: "cover",
+          backgroundPosition: "center",
+        }}
+      >
+        <div
+          style={{
+            backgroundImage: `url('${selectedData[0].building}')`,
+            backgroundSize: "cover",
+            backgroundPosition: "top",
+          }}
+          className="flex flex-col items-center"
+        >
+          <label className="rounded-lg bg-slate-800 bg-opacity-40 p-1 text-white">
+            {selectedData[0].cityname + ", " + selectedData[0].citycodename}
+          </label>
+          <div
+            className="text-yellow-20 text-black-50 z-10 flex text-fuchsia-50 "
+            // style={{
+            //   backgroundImage: `url('${selectedData[0].building}')`,
+            //   backgroundSize: 'contain',
+            //   backgroundRepeat: 'no-repeat',
+            //   backgroundPosition: 'bottom',
+            // }}
           >
-            By{" "}
-            <Image
-              src="/vercel.svg"
-              alt="Vercel Logo"
-              className="dark:invert"
-              width={100}
-              height={24}
-              priority
-            />
-          </a>
+            <label className="z-0 mt-[-3rem] text-[9rem]">{selectedData[0].temperature}</label>
+            <label className="text-[2rem]">{"\u00B0"}</label>
+          </div>
+          <label className="z-10 mt-[-1.5rem] bg-slate-800 bg-opacity-40 from-orange-200 px-2 text-yellow-50">
+            {"H: " + selectedData[0].highestTemperature + "\u00B0 L: " + selectedData[0].lowestTemperature + "\u00B0"}
+          </label>
         </div>
       </div>
-
-      <div className="relative flex place-items-center before:absolute before:h-[300px] before:w-full sm:before:w-[480px] before:-translate-x-1/2 before:rounded-full before:bg-gradient-radial before:from-white before:to-transparent before:blur-2xl before:content-[''] after:absolute after:-z-20 after:h-[180px] after:w-full sm:after:w-[240px] after:translate-x-1/3 after:bg-gradient-conic after:from-sky-200 after:via-blue-200 after:blur-2xl after:content-[''] before:dark:bg-gradient-to-br before:dark:from-transparent before:dark:to-blue-700 before:dark:opacity-10 after:dark:from-sky-900 after:dark:via-[#0141ff] after:dark:opacity-40 before:lg:h-[360px] z-[-1]">
-        <Image
-          className="relative dark:drop-shadow-[0_0_0.3rem_#ffffff70] dark:invert"
-          src="/next.svg"
-          alt="Next.js Logo"
-          width={180}
-          height={37}
-          priority
-        />
-      </div>
-
-      <div className="mb-32 grid text-center lg:max-w-5xl lg:w-full lg:mb-0 lg:grid-cols-4 lg:text-left">
-        <a
-          href="https://nextjs.org/docs?utm_source=create-next-app&utm_medium=appdir-template&utm_campaign=create-next-app"
-          className="group rounded-lg border border-transparent px-5 py-4 transition-colors hover:border-gray-300 hover:bg-gray-100 hover:dark:border-neutral-700 hover:dark:bg-neutral-800/30"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <h2 className={`mb-3 text-2xl font-semibold`}>
-            Docs{" "}
-            <span className="inline-block transition-transform group-hover:translate-x-1 motion-reduce:transform-none">
-              -&gt;
-            </span>
-          </h2>
-          <p className={`m-0 max-w-[30ch] text-sm opacity-50`}>
-            Find in-depth information about Next.js features and API.
-          </p>
-        </a>
-
-        <a
-          href="https://nextjs.org/learn?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-          className="group rounded-lg border border-transparent px-5 py-4 transition-colors hover:border-gray-300 hover:bg-gray-100 hover:dark:border-neutral-700 hover:dark:bg-neutral-800/30"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <h2 className={`mb-3 text-2xl font-semibold`}>
-            Learn{" "}
-            <span className="inline-block transition-transform group-hover:translate-x-1 motion-reduce:transform-none">
-              -&gt;
-            </span>
-          </h2>
-          <p className={`m-0 max-w-[30ch] text-sm opacity-50`}>
-            Learn about Next.js in an interactive course with&nbsp;quizzes!
-          </p>
-        </a>
-
-        <a
-          href="https://vercel.com/templates?framework=next.js&utm_source=create-next-app&utm_medium=appdir-template&utm_campaign=create-next-app"
-          className="group rounded-lg border border-transparent px-5 py-4 transition-colors hover:border-gray-300 hover:bg-gray-100 hover:dark:border-neutral-700 hover:dark:bg-neutral-800/30"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <h2 className={`mb-3 text-2xl font-semibold`}>
-            Templates{" "}
-            <span className="inline-block transition-transform group-hover:translate-x-1 motion-reduce:transform-none">
-              -&gt;
-            </span>
-          </h2>
-          <p className={`m-0 max-w-[30ch] text-sm opacity-50`}>
-            Explore starter templates for Next.js.
-          </p>
-        </a>
-
-        <a
-          href="https://vercel.com/new?utm_source=create-next-app&utm_medium=appdir-template&utm_campaign=create-next-app"
-          className="group rounded-lg border border-transparent px-5 py-4 transition-colors hover:border-gray-300 hover:bg-gray-100 hover:dark:border-neutral-700 hover:dark:bg-neutral-800/30"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <h2 className={`mb-3 text-2xl font-semibold`}>
-            Deploy{" "}
-            <span className="inline-block transition-transform group-hover:translate-x-1 motion-reduce:transform-none">
-              -&gt;
-            </span>
-          </h2>
-          <p className={`m-0 max-w-[30ch] text-sm opacity-50 text-balance`}>
-            Instantly deploy your Next.js site to a shareable URL with Vercel.
-          </p>
-        </a>
+      <div className="m-5 flex max-w-[12rem] flex-wrap gap-3">
+        {Details.map((citydetails) => (
+          <button
+            onClick={() => setSelectedCity(citydetails.cityname)}
+            key={citydetails.citycodename}
+            className={`delay-10 border-r-2 pr-2  transition duration-300 ease-in-out hover:-translate-y-1 hover:scale-110 hover:border-b-2 
+            ${selectedCity === citydetails.cityname ? "border-b-2 border-r-2 border-black bg-gray-300" : ""} `}
+          >
+            {citydetails.cityname}
+          </button>
+        ))}
       </div>
     </main>
   );
