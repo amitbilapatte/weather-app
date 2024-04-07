@@ -82,52 +82,90 @@ const Details = [
 ];
 
 export default function Page() {
+  const convertFToC = (temp: number) => {
+    // The formula for Fahrenheit to Celsius is °C = [(°F-32)×5]/9
+    return Math.round(((temp - 32) * 5) / 9);
+  };
   const [selectedCity, setSelectedCity] = useState("Mumbai");
+  const [selectedCityTemp, setSelectedCityTemp] = useState({
+    Minimum: {
+      Value: 53.0,
+    },
+    Maximum: {
+      Value: 65.0,
+    },
+  });
 
-  const selectedData = Details.filter((data) => data.cityname === selectedCity);
+  const handleChangeCity = (city: string) => {
+    setSelectedCity(city);
+  };
+
+  const getCityData = async (lKey: number) => {
+    try {
+      const response = axios
+        .get(
+          `http://dataservice.accuweather.com/forecasts/v1/daily/1day/${lKey}?apikey=OyhGKaL8OdeBEfSZZTQ1gnERrUCrIffv`
+        )
+        .then((response) => {
+          setSelectedCityTemp(response.data.DailyForecasts[0].Temperature);
+        })
+        .catch((error) => {
+          console.error("Error fetching city data:", error);
+        });
+    } catch (error) {
+      console.error("Error fetching city data:", error);
+    }
+  };
+
+  useEffect(() => {
+    const selectedData = Details.find((data) => data.cityname === selectedCity);
+    getCityData((selectedData && selectedData.locationKey) || 204842);
+  }, [selectedCity]);
+
+  const selectedData = Details.find((data) => data.cityname === selectedCity);
 
   return (
     <main className="flex h-8 min-h-screen flex-col items-center justify-center bg-slate-400 p-6 hover:h-full">
       <div
-        className="flex h-52 w-52 flex-col items-center justify-center  rounded-xl bg-white p-6"
+        className="flex h-52 w-52 flex-col items-center justify-center rounded-xl bg-white p-6"
         style={{
-          backgroundImage: `url('${selectedData[0].cityicon}')`,
+          backgroundImage: `url('${(selectedData && selectedData.cityicon) || "./weather/sunny.gif"}')`,
           backgroundSize: "cover",
           backgroundPosition: "center",
         }}
       >
         <div
           style={{
-            backgroundImage: `url('${selectedData[0].building}')`,
+            backgroundImage: `url('${(selectedData && selectedData.building) || "./building/tokyo-building.png"}')`,
             backgroundSize: "cover",
             backgroundPosition: "top",
           }}
           className="flex flex-col items-center"
         >
           <label className="rounded-lg bg-slate-800 bg-opacity-40 p-1 text-white">
-            {selectedData[0].cityname + ", " + selectedData[0].citycodename}
+            {(selectedData && selectedData.cityname) ||
+              ("Mumbai" + ", " + selectedData && selectedData.citycodename) ||
+              "MUM"}
           </label>
-          <div
-            className="text-yellow-20 text-black-50 z-10 flex text-fuchsia-50 "
-            // style={{
-            //   backgroundImage: `url('${selectedData[0].building}')`,
-            //   backgroundSize: 'contain',
-            //   backgroundRepeat: 'no-repeat',
-            //   backgroundPosition: 'bottom',
-            // }}
-          >
-            <label className="z-0 mt-[-3rem] text-[9rem]">{selectedData[0].temperature}</label>
+          <div className="text-yellow-20 text-black-50 z-10 flex text-fuchsia-50 ">
+            <label className="z-0 mt-[-3rem] text-[9rem]">
+              {convertFToC((selectedCityTemp.Maximum.Value + selectedCityTemp.Minimum.Value) / 2)}
+            </label>
             <label className="text-[2rem]">{"\u00B0"}</label>
           </div>
           <label className="z-10 mt-[-1.5rem] bg-slate-800 bg-opacity-40 from-orange-200 px-2 text-yellow-50">
-            {"H: " + selectedData[0].highestTemperature + "\u00B0 L: " + selectedData[0].lowestTemperature + "\u00B0"}
+            {"H: " +
+              convertFToC(selectedCityTemp.Maximum.Value) +
+              "\u00B0 L: " +
+              convertFToC(selectedCityTemp.Minimum.Value) +
+              "\u00B0"}
           </label>
         </div>
       </div>
       <div className="m-5 flex max-w-[12rem] flex-wrap gap-3">
         {Details.map((citydetails) => (
           <button
-            onClick={() => setSelectedCity(citydetails.cityname)}
+            onClick={() => handleChangeCity(citydetails.cityname)}
             key={citydetails.citycodename}
             className={`delay-10 border-r-2 pr-2  transition duration-300 ease-in-out hover:-translate-y-1 hover:scale-110 hover:border-b-2 
             ${selectedCity === citydetails.cityname ? "border-b-2 border-r-2 border-black bg-gray-300" : ""} `}
