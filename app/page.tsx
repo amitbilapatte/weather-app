@@ -144,7 +144,7 @@ export default function Page() {
         >
           <label className="rounded-lg bg-slate-800 bg-opacity-40 p-1 text-white">
             {(selectedData && selectedData.cityname) ||
-              ("Mumbai" + ", " + selectedData && selectedData.citycodename) ||
+              "Mumbai" + ", " + (selectedData && selectedData.citycodename) ||
               "MUM"}
           </label>
           <div className="text-yellow-20 text-black-50 z-10 flex text-fuchsia-50 ">
