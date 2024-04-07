@@ -1,10 +1,12 @@
 "use client";
 
-import { useState } from "react";
+import axios from "axios";
+import { useEffect, useState } from "react";
 
 const Details = [
   {
     cityname: "Mumbai",
+    locationKey: 204842,
     lat: -33,
     long: 151,
     citycodename: "MUM",
@@ -19,6 +21,7 @@ const Details = [
   },
   {
     cityname: "New York",
+    locationKey: 349727,
     lat: 40,
     long: 74,
     citycodename: "NYC",
@@ -33,6 +36,7 @@ const Details = [
   },
   {
     cityname: "London",
+    locationKey: 328328,
     lat: 51,
     long: 10,
     citycodename: "LDN",
@@ -47,6 +51,7 @@ const Details = [
   },
   {
     cityname: "Tokyo",
+    locationKey: 226396,
     lat: 35,
     long: 13,
     citycodename: "TYO",
@@ -61,6 +66,7 @@ const Details = [
   },
   {
     cityname: "Paris",
+    locationKey: 623,
     lat: 48,
     long: 23,
     citycodename: "PAR",
