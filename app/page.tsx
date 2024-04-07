@@ -104,7 +104,7 @@ export default function Page() {
     try {
       const response = axios
         .get(
-          `http://dataservice.accuweather.com/forecasts/v1/daily/1day/${lKey}?apikey=OyhGKaL8OdeBEfSZZTQ1gnERrUCrIffv`
+          `https://dataservice.accuweather.com/forecasts/v1/daily/1day/${lKey}?apikey=OyhGKaL8OdeBEfSZZTQ1gnERrUCrIffv`
         )
         .then((response) => {
           setSelectedCityTemp(response.data.DailyForecasts[0].Temperature);
