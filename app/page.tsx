@@ -107,10 +107,14 @@ export default function Page() {
           `https://dataservice.accuweather.com/forecasts/v1/daily/1day/${lKey}?apikey=OyhGKaL8OdeBEfSZZTQ1gnERrUCrIffv`
         )
         .then((response) => {
+          console.log(response.data.DailyForecasts[0].Temperature);
           setSelectedCityTemp(response.data.DailyForecasts[0].Temperature);
         })
         .catch((error) => {
-          console.error("Error fetching city data:", error);
+          error.message === "Network Error"
+            ? alert("Showing randon data due to " + error.message)
+            : alert(error.message);
+          console.log(error.message);
         });
     } catch (error) {
       console.error("Error fetching city data:", error);
