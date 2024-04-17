@@ -109,6 +109,7 @@ export default function Page() {
             //   backgroundRepeat: 'no-repeat',
             //   backgroundPosition: 'bottom',
             // }}
+            // try code commits reversing/ removing
           >
             <label className="z-0 mt-[-3rem] text-[9rem]">{selectedData[0].temperature}</label>
             <label className="text-[2rem]">{"\u00B0"}</label>
